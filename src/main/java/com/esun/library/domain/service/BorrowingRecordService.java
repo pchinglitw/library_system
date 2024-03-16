@@ -8,6 +8,7 @@ import jakarta.persistence.StoredProcedureQuery;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,5 +25,16 @@ public class BorrowingRecordService {
         query.execute();
 
         return query.getResultList().stream().findFirst();
+    }
+
+    @Transactional
+    public List<BorrowingRecord> findRecordByUserId(Integer userId) {
+        StoredProcedureQuery query = this.entityManager.createStoredProcedureQuery("get_record", BorrowingRecord.class)
+                .registerStoredProcedureParameter(1, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(2, void.class, ParameterMode.REF_CURSOR)
+                .setParameter(1, userId);
+        query.execute();
+
+        return query.getResultList();
     }
 }
