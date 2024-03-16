@@ -29,7 +29,7 @@ public class BorrowingRecordService {
 
     @Transactional
     public List<BorrowingRecord> findRecordByUserId(Integer userId) {
-        StoredProcedureQuery query = this.entityManager.createStoredProcedureQuery("get_record", BorrowingRecord.class)
+        StoredProcedureQuery query = this.entityManager.createStoredProcedureQuery("get_record_by_user_id", BorrowingRecord.class)
                 .registerStoredProcedureParameter(1, Integer.class, ParameterMode.IN)
                 .registerStoredProcedureParameter(2, void.class, ParameterMode.REF_CURSOR)
                 .setParameter(1, userId);
