@@ -1,6 +1,7 @@
 package com.esun.library.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,8 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Getter
-@Setter
+@Data
 @Table(name = "user")
 public class User {
     @Id
@@ -29,7 +29,7 @@ public class User {
     private Date registrationTime;
 
     private Date lastLoginTime;
-
-    @OneToMany(mappedBy = "user")
-    private List<BorrowingRecord> borrowingRecords;
+//
+//    @OneToMany(mappedBy = "user")
+//    private List<BorrowingRecord> borrowingRecords;
 }

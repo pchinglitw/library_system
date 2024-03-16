@@ -1,7 +1,9 @@
 package com.esun.library.web.controller;
 
-import com.esun.library.domain.entity.Book;
-import com.esun.library.domain.service.BookService;
+import com.esun.library.app.service.BookBorrowService;
+import com.esun.library.app.service.BookInventoryService;
+import com.esun.library.web.dto.request.BookRequest;
+import com.esun.library.web.dto.response.InventoryResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,20 +12,24 @@ import java.util.List;
 @RestController
 @RequestMapping("/book")
 public class BookController {
+    private final BookInventoryService inventoryService;
+    private final BookBorrowService borrowService;
 
     @Autowired
-    private BookService bookService;
+    public BookController(BookInventoryService inventoryService, BookBorrowService borrowService) {
+        this.inventoryService = inventoryService;
+        this.borrowService = borrowService;
+    }
 
     @GetMapping("/all")
-    public List<Book> allBook() {
-        System.out.println(bookService.allBook());
-        return bookService.allBook();
+    public List<InventoryResponse> allInventory() {
+        return inventoryService.execute();
     }
-//
-//    @PostMapping("/borrow")
-//    public AnnouncementPo borrowBook(@RequestBody AnnouncementPo announcementPo) {
-//        announcementService.borrowBook(announcementPo);
-//        return announcementPo;
-//    }
+
+    @PostMapping("/borrow")
+    public Object borrowBook(@RequestBody BookRequest request) {
+        borrowService.execute(request);
+        return null;
+    }
 
 }

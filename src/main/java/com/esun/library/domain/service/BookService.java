@@ -21,18 +21,11 @@ public class BookService {
     private EntityManager entityManager;
 
     @Transactional
-    public List<Book> allBook() {
-//        System.out.println(bookRepository.getAllBooks());
-        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("getAllBooks", Book.class);
+    public List<Book> findAllBook() {
+        StoredProcedureQuery query = entityManager.createStoredProcedureQuery("get_all_books", Book.class);
         query.registerStoredProcedureParameter(1, void.class, ParameterMode.REF_CURSOR);
         query.execute();
 
-        List<Book> bookList = query.getResultList();
-        System.out.println(bookList);
-        bookList.forEach(book -> {
-            System.out.println(book.getIsbn());
-        });
-
-        return bookList;
+        return query.getResultList();
     }
 }

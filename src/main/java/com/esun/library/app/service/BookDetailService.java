@@ -14,7 +14,7 @@ public class BookDetailService {
     private BookService bookService;
 
     public BookResponse execute() {
-        List<Book> bookList = bookService.allBook();
+        List<Book> bookList = bookService.findAllBook();
 
         return null;
     }
