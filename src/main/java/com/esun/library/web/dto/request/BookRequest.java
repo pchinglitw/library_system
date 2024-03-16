@@ -8,4 +8,6 @@ public class BookRequest {
     private Integer userId;
 
     private Integer inventoryId;
+
+    private Integer recordId;
 }
