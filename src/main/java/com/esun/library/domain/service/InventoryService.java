@@ -1,13 +1,10 @@
 package com.esun.library.domain.service;
 
-import com.esun.library.domain.entity.Book;
 import com.esun.library.domain.entity.Inventory;
-import com.esun.library.domain.repository.InventoryRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.ParameterMode;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.StoredProcedureQuery;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,7 +28,7 @@ public class InventoryService {
 
     @Transactional
     public Optional<Inventory> findInventoryById(Integer inventoryId) {
-        StoredProcedureQuery query = this.entityManager.createStoredProcedureQuery("getInventoryById", Inventory.class)
+        StoredProcedureQuery query = this.entityManager.createStoredProcedureQuery("get_inventory_by_id", Inventory.class)
                 .registerStoredProcedureParameter(1, Integer.class, ParameterMode.IN)
                 .registerStoredProcedureParameter(2, void.class, ParameterMode.REF_CURSOR)
                 .setParameter(1, inventoryId);
