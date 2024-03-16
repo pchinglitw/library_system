@@ -41,7 +41,6 @@ public class UserBorrowingRecordService {
 
     public List<RecordResponse> execute(RecordRequest request) {
         Integer userId = request.getUserId();
-        System.out.println(userId);
         if (userId == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
