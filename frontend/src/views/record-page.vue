@@ -8,7 +8,7 @@
       <article>
         <div class="book_info" v-for="book in books" :key="book.recordId">
           <div>
-            <label>書名：</label><span>{{ book.name }}</span>
+            <label>書名：</label><span>{{ book.bookName }}</span>
             <br />
             <label>作者：</label><span>{{ book.author }}</span>
             <br />
