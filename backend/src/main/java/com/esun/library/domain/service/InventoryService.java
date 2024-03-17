@@ -57,19 +57,19 @@ public class InventoryService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void bookReturn(Integer inventoryId, Integer recordId) {
+    public void bookReturn(List<Integer> inventoryIdList, List<Integer> recordIdList) {
         // update table Inventory.status
         entityManager.createStoredProcedureQuery("update_inventory_status")
-                .registerStoredProcedureParameter(1, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(1, Integer[].class, ParameterMode.IN)
                 .registerStoredProcedureParameter(2, Integer.class, ParameterMode.IN)
-                .setParameter(1, inventoryId)
+                .setParameter(1, inventoryIdList.toArray(new Integer[0]))
                 .setParameter(2, "1")
                 .execute();
 
         // update table BookRecord.returnTime
         entityManager.createStoredProcedureQuery("update_record")
-                .registerStoredProcedureParameter(1, Integer.class, ParameterMode.IN)
-                .setParameter(1, recordId)
+                .registerStoredProcedureParameter(1, Integer[].class, ParameterMode.IN)
+                .setParameter(1, recordIdList.toArray(new Integer[0]))
                 .execute();
     }
 

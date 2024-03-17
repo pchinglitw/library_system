@@ -9,8 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,29 +28,36 @@ public class BookReturnService {
     }
 
     public void execute(BookRequest request) {
-        Integer inventoryId = request.getInventoryId();
-        Integer recordId = request.getRecordId();
+        List<Integer> recordIdList = request.getRecordId();
+        List<Integer> inventoryIdList = new ArrayList<>();
 
-        if (inventoryId == null || recordId == null) {
+        if (CollectionUtils.isEmpty(recordIdList)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        Optional<Inventory> inventoryOpt = inventoryService.findInventoryById(inventoryId);
-        if (inventoryOpt.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "inventoryId not found");
-        }
+        recordIdList.forEach(recordId -> {
+            Optional<BorrowingRecord> recordOpt = recordService.findRecordById(recordId);
+            if (recordOpt.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "recordId not found");
+            }
 
-        Optional<BorrowingRecord> recordOpt = recordService.findRecordById(recordId);
-        if (recordOpt.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "recordId not found");
-        }
+            Integer inventoryId = recordOpt.get().getInventoryId();
 
-        if (StringUtils.equals(inventoryOpt.get().getStatus().getStatusId(), "1")) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "The status is currently not ready for returning books.");
-        }
+            Optional<Inventory> inventoryOpt = inventoryService.findInventoryById(inventoryId);
+            if (inventoryOpt.isEmpty()) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, "inventoryId not found");
+            }
+
+            if (StringUtils.equals(inventoryOpt.get().getStatus().getStatusId(), "1")) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "The status is currently not ready for returning books.");
+            }
+
+            inventoryIdList.add(inventoryId);
+        });
+
 
         try {
-            inventoryService.bookReturn(inventoryId, recordId);
+            inventoryService.bookReturn(inventoryIdList, recordIdList);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
