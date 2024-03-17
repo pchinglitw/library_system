@@ -18,14 +18,6 @@ public class BorrowingRecord {
 
     @Column(name = "inventory_id")
     private Integer inventoryId;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "inventory_id")
-//    private Inventory inventory;
 
     @Column(nullable = false)
     private Date borrowingTime;

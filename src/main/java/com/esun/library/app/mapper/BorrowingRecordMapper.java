@@ -1,13 +1,9 @@
 package com.esun.library.app.mapper;
 
 import com.esun.library.domain.entity.BorrowingRecord;
-import com.esun.library.domain.entity.Inventory;
-import com.esun.library.web.dto.response.InventoryResponse;
 import com.esun.library.web.dto.response.RecordResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-
-import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface BorrowingRecordMapper {

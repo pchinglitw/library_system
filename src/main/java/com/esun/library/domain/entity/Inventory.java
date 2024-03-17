@@ -2,11 +2,8 @@ package com.esun.library.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Data
@@ -32,7 +29,4 @@ public class Inventory {
     @ManyToOne
     @JoinColumn(name = "isbn", referencedColumnName = "isbn", insertable=false, updatable=false)
     private Book book;
-//
-//    @OneToMany(mappedBy = "inventory")
-//    private List<BorrowingRecord> borrowingRecords;
 }

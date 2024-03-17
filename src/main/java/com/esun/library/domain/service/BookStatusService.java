@@ -1,6 +1,5 @@
 package com.esun.library.domain.service;
 
-import com.esun.library.domain.entity.Book;
 import com.esun.library.domain.entity.BookStatus;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.ParameterMode;

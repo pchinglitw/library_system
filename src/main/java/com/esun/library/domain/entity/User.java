@@ -26,7 +26,4 @@ public class User {
     private Date registrationTime;
 
     private Date lastLoginTime;
-//
-//    @OneToMany(mappedBy = "user")
-//    private List<BorrowingRecord> borrowingRecords;
 }

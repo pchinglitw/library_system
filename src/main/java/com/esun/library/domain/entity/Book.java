@@ -3,8 +3,6 @@ package com.esun.library.domain.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.util.List;
-
 @Entity
 @Data
 @Table(name = "book")
@@ -20,7 +18,4 @@ public class Book {
 
     @Column(columnDefinition = "TEXT")
     private String introduction;
-//
-//    @OneToMany(mappedBy = "book")
-//    private List<Inventory> inventories;
 }
