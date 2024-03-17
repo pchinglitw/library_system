@@ -38,21 +38,21 @@ public class InventoryService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void bookBorrow(Integer inventoryId, Integer userId) {
+    public void bookBorrow(List<Integer> inventoryIdList, Integer userId) {
         // update table Inventory.status
         entityManager.createStoredProcedureQuery("update_inventory_status")
-                .registerStoredProcedureParameter(1, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(1, Integer[].class, ParameterMode.IN)
                 .registerStoredProcedureParameter(2, Integer.class, ParameterMode.IN)
-                .setParameter(1, inventoryId)
+                .setParameter(1, inventoryIdList.toArray(new Integer[0]))
                 .setParameter(2, "2")
                 .execute();
 
         // insert a new entity into table BookRecord
         entityManager.createStoredProcedureQuery("insert_book_record")
                 .registerStoredProcedureParameter(1, Integer.class, ParameterMode.IN)
-                .registerStoredProcedureParameter(2, Integer.class, ParameterMode.IN)
+                .registerStoredProcedureParameter(2, Integer[].class, ParameterMode.IN)
                 .setParameter(1, userId)
-                .setParameter(2, inventoryId)
+                .setParameter(2, inventoryIdList.toArray(new Integer[0]))
                 .execute();
     }
 
