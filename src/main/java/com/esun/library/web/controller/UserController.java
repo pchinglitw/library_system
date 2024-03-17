@@ -27,17 +27,20 @@ public class UserController {
 
     @PostMapping("/register")
     public Object register(@RequestBody RegisterRequest request) {
+        UserResponse response;
+
         try {
-            registerService.execute(request);
+            response = registerService.execute(request);
         } catch (ResponseStatusException e) {
             return ResponseEntity.status(e.getStatusCode().value()).body(e.getMessage());
         }
-        return null;
+
+        return response;
     }
 
     @PostMapping("/login")
     public Object register(@RequestBody LoginRequest request) {
-        UserResponse response = new UserResponse();
+        UserResponse response;
 
         try {
             response = loginService.execute(request);

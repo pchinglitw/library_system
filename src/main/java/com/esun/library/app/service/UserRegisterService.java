@@ -4,6 +4,8 @@ import com.esun.library.app.mapper.UserMapper;
 import com.esun.library.domain.entity.User;
 import com.esun.library.domain.service.UserService;
 import com.esun.library.web.dto.request.RegisterRequest;
+import com.esun.library.web.dto.response.UserResponse;
+import org.apache.commons.lang3.StringUtils;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,32 +17,42 @@ import java.util.Optional;
 
 @Service
 public class UserRegisterService {
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-    @Autowired
-    private UserService userService;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final UserService userService;
     private final UserMapper mapper = Mappers.getMapper(UserMapper.class);
 
-    public void execute(RegisterRequest request) {
-        System.out.println(request.getPassword());
+    @Autowired
+    public UserRegisterService(BCryptPasswordEncoder passwordEncoder, UserService userService) {
+        this.passwordEncoder = passwordEncoder;
+        this.userService = userService;
+    }
 
-        Optional<User> userOpt = userService.findByPhoneNum(request.getPhoneNum());
-        System.out.println(userOpt);
+    public UserResponse execute(RegisterRequest request) {
+        String phoneNum = request.getPhoneNum();
+        String pwd = request.getPassword();
+        String name = request.getName();
+
+        if (StringUtils.isBlank(phoneNum) || StringUtils.isBlank(pwd) || StringUtils.isBlank(name)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "phone number, password, user name cannot be empty.");
+        }
+
+        Optional<User> userOpt = userService.findByPhoneNum(phoneNum);
         if (userOpt.isPresent()) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "this phone number had been registered");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "this phone number had been registered.");
         }
 
         User user = mapper.requestToEntity(request);
         // 雜湊密碼
-        String encodedPassword = passwordEncoder.encode(request.getPassword());
+        String encodedPassword = passwordEncoder.encode(pwd);
         user.setPasswordHash(encodedPassword);
-        System.out.println(user);
 
         try {
             userService.register(user);
+            userOpt = userService.findByPhoneNum(phoneNum);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
+        return userOpt.map(mapper::entityToUserResponse).orElse(null);
     }
 }
