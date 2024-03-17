@@ -1,12 +1,12 @@
 <template>
   <header>
-    <button @click="onLogout">我要還書</button>
-    <button @click="onLogout">借閱紀錄</button>
-    <button @click="onLogout">登出</button>
+    <button @click="onSubmit">借書</button>
+    <button @click="toReturn">我要還書</button>
+    <button @click="toRecord">借閱紀錄</button>
   </header>
   <section>
     <form @submit="onSubmit">
-      <article class="each_book">
+      <article>
         <div class="book_info" v-for="book in books" :key="book.inventoryId">
           <div>
             <label>書名：</label><span>{{ book.name }}</span>
@@ -48,17 +48,12 @@ onMounted(() => {
   onRefresh();
 });
 
-const onLogout = () => {
-  fetch(`${process.env.VITE_BASE_URL}/logout`, {
-    method: "post",
-    "Content-Type": "application/json",
-    body: {
-      userId: localStorage.get("userId"),
-    },
-  }).then(() => {
-    localStorage.clear();
-    router.push("/login");
-  });
+const toRecord = () => {
+  router.push("/record");
+};
+
+const toReturn = () => {
+  router.push("/bookReturn");
 };
 
 const selectedBooks = ref([]);
@@ -78,6 +73,7 @@ const onSubmit = (event) => {
   })
     .then(() => {
       alert("借書成功");
+      selectedBooks.value = [];
       onRefresh();
     })
     .catch(() => {
