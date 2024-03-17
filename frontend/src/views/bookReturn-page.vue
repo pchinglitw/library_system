@@ -1,6 +1,6 @@
 <template>
   <header>
-    <button type="submit" :disabled="books.length === 0" :style="books.length === 0 ? 'background-color: #ccc; color: #666; cursor: not-allowed;' : 'background-color: #4caf50; cursor: pointer;'">還書</button>
+    <button @click="onSubmit" :disabled="books.length === 0" :style="books.length === 0 ? 'background-color: #ccc; color: #666; cursor: not-allowed;' : 'background-color: #4caf50; cursor: pointer;'">還書</button>
     <button @click="toRecord">借閱紀錄</button>
     <button @click="toHome">回到總覽</button>
   </header>

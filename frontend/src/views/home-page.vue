@@ -1,6 +1,6 @@
 <template>
   <header>
-    <button type="submit" :disabled="isSubmitDisabled" :class="{ 'button-disabled': isSubmitDisabled }">借書</button>
+    <button @click="onSubmit" :class="{ 'button-disabled': isSubmitDisabled }" :disabled="isSubmitDisabled">借書</button>
     <button @click="toReturn">我要還書</button>
     <button @click="toRecord">借閱紀錄</button>
   </header>
