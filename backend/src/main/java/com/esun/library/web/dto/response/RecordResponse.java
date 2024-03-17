@@ -22,4 +22,6 @@ public class RecordResponse {
 
     @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss", timezone = "Asia/Taipei")
     private Date returnTime;
+
+    private String status;
 }
