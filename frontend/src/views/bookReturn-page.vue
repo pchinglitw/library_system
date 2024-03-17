@@ -1,9 +1,13 @@
 <template>
   <header>
-    <button @click="onSubmit">還書</button>
+    <button type="submit" :disabled="books.length === 0" :style="books.length === 0 ? 'background-color: #ccc; color: #666; cursor: not-allowed;' : 'background-color: #4caf50; cursor: pointer;'">還書</button>
     <button @click="toRecord">借閱紀錄</button>
+    <button @click="toHome">回到總覽</button>
   </header>
   <section>
+    <div class="centered-text" v-if="books.length === 0">
+      <p>目前沒有借閱中的書籍</p>
+    </div>
     <form @submit="onSubmit">
       <article class="each_book">
         <div class="book_info" v-for="book in books" :key="book.recordId">
@@ -19,7 +23,9 @@
           <input type="checkbox" v-model="selectedBooks" :value="book.recordId" />
         </div>
       </article>
-      <button type="submit">還書</button>
+      <button type="submit" :disabled="books.length === 0" :style="books.length === 0 ? 'background-color: #ccc; color: #666; cursor: not-allowed;' : 'background-color: #4caf50; cursor: pointer;'" style="margin-right: 10px">還書</button>
+      <button @click="toRecord" style="margin-right: 10px">借閱紀錄</button>
+      <button @click="toHome">回到總覽</button>
     </form>
   </section>
 </template>
@@ -47,6 +53,14 @@ onMounted(() => {
     books.value = filteredData;
   });
 });
+
+const toRecord = () => {
+  router.push("/record");
+};
+
+const toHome = () => {
+  router.push("/");
+};
 
 const selectedBooks = ref([]);
 
@@ -131,5 +145,8 @@ button {
   width: 60%;
   height: fit-content;
   border: 1px solid black;
+}
+.centered-text {
+  text-align: center;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <header>
-    <button @click="onSubmit">借書</button>
+    <button type="submit" :disabled="isSubmitDisabled" :class="{ 'button-disabled': isSubmitDisabled }">借書</button>
     <button @click="toReturn">我要還書</button>
     <button @click="toRecord">借閱紀錄</button>
   </header>
@@ -20,13 +20,15 @@
           <input type="checkbox" v-model="selectedBooks" :value="book.inventoryId" :disabled="book.status !== '在庫'" />
         </div>
       </article>
-      <button type="submit">借書</button>
+      <button type="submit" :disabled="isSubmitDisabled" :class="{ 'button-disabled': isSubmitDisabled }" style="margin-right: 10px">借書</button>
+      <button @click="toReturn" style="margin-right: 10px">我要還書</button>
+    <button @click="toRecord">借閱紀錄</button>
     </form>
   </section>
 </template>
 
 <script setup>
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -80,6 +82,10 @@ const onSubmit = (event) => {
       alert("借書失敗");
     });
 };
+
+const isSubmitDisabled = computed(() => {
+  return selectedBooks.value.length === 0;
+});
 </script>
 
 <style scoped>
@@ -140,5 +146,10 @@ button {
   width: 60%;
   height: fit-content;
   border: 1px solid black;
+}
+.button-disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
 }
 </style>
