@@ -1,5 +1,6 @@
 package com.esun.library.web.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import java.util.Date;
@@ -8,6 +9,7 @@ import java.util.Date;
 public class InventoryResponse {
     private Integer inventoryId;
 
+    @JsonFormat(pattern = "yyyy/MM/dd HH:mm:ss", timezone = "Asia/Taipei")
     private Date storeTime;
 
     private String status;
