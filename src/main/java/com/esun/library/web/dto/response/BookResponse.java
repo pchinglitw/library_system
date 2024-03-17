@@ -4,8 +4,6 @@ import lombok.Data;
 
 @Data
 public class BookResponse {
-    private String msg;
-
     private String isbn;
 
     private String name;
