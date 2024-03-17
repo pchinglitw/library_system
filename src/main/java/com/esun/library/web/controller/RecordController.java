@@ -14,8 +14,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/borrowingRecord")
 public class RecordController {
+    private final UserBorrowingRecordService recordService;
+
     @Autowired
-    private UserBorrowingRecordService recordService;
+    public RecordController(UserBorrowingRecordService recordService) {
+        this.recordService = recordService;
+    }
 
     @GetMapping("/all")
     public List<RecordResponse> allInventory(@RequestBody RecordRequest request) {
