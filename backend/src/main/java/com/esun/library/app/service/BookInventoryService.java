@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -61,7 +62,7 @@ public class BookInventoryService {
                     responseList.add(response);
                 }));
 
-        return responseList;
+        return responseList.stream().sorted(Comparator.comparing(InventoryResponse::getInventoryId)).toList();
     }
 
     private String getStausName(String statusId) {

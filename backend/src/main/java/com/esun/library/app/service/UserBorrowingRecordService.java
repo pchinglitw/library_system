@@ -18,10 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class UserBorrowingRecordService {
@@ -70,7 +67,7 @@ public class UserBorrowingRecordService {
             responseList.add(response);
         });
 
-        return responseList;
+        return responseList.stream().sorted(Comparator.comparing(RecordResponse::getRecordId).reversed()).toList();
     }
 
     private Inventory findInventory(Integer inventoryId) {
